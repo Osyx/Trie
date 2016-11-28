@@ -4,7 +4,7 @@ import java.util.Map;
 /**
  * Created by Oscar on 16-11-25.
  */
-public class Trie implements Iterator<Map.Entry<String, Integer>> {
+public class Trie {
     private Node root;
 
     public Trie() {
@@ -94,21 +94,60 @@ public class Trie implements Iterator<Map.Entry<String, Integer>> {
     private class TrieIterator implements Iterator<Map.Entry<String, Integer>> {
         Node root;
         Node current;
+        String preWord = "";
 
         public TrieIterator(Node root) {
             this.root = this.current = root;
         }
 
-        public Map.Entry next() {
-
-            return Map< >;
+        @Override
+        public Map.Entry<String, Integer> next() {
+            NodeMap map = null;
+            for(int i = 0; i < 26; i++) {
+                if(preWord.charAt(preWord.length() - 1) - 'a' >= i ) {
+                    if(current.LetterArr[i] != null){
+                        preWord += (char)(i + 'a');
+                        map = new NodeMap(preWord, current.counter);
+                        current = current.LetterArr[i];
+                    }
+                }
+            }
+            return map;
         }
 
+        @Override
         public boolean hasNext() {
-            if(searchDistinctChild(current) > 0)
+            if(0 > 0)
                 return true;
 
             return false;
+        }
+    }
+
+    class NodeMap<String, Integer> implements Map.Entry<String, Integer> {
+        private final String key;
+        private Integer value;
+
+        public NodeMap(String key, Integer value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public String getKey() {
+            return key;
+        }
+
+        @Override
+        public Integer getValue() {
+            return value;
+        }
+
+        @Override
+        public Integer setValue(Integer value) {
+            Integer old = this.value;
+            this.value = value;
+            return old;
         }
     }
 
