@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /**
  * Created by Oscar on 16-11-25.
  */
@@ -16,5 +18,7 @@ public class Driver {
         System.out.println(trie.get(""));
         System.out.println("Count: " + trie.count("he"));
         System.out.println("Count: " + trie.countDistinct("he"));
+        Iterator iterator = trie.iterator();
+        iterator.next();
     }
 }

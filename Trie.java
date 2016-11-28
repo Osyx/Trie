@@ -101,18 +101,37 @@ public class Trie {
         }
 
         @Override
-        public Map.Entry<String, Integer> next() {
+        public NodeMap next() {
             NodeMap map = null;
+            nextHelper();
+            return map;
+        }
+
+        private Node nextHelper() {
             for(int i = 0; i < 26; i++) {
-                if(preWord.charAt(preWord.length() - 1) - 'a' >= i ) {
-                    if(current.LetterArr[i] != null){
-                        preWord += (char)(i + 'a');
-                        map = new NodeMap(preWord, current.counter);
+                if (current.LetterArr[i] != null) {
+                    if(preWord != "") {
+                        if (preWord.charAt(preWord.length() - 1) - 'a' >= i) {
+                            current = current.LetterArr[i];
+                            preWord = preWord.substring(0, preWord.length() - 1);
+                            preWord += (char) (i + 'a');
+                            if (current.counter == 0) {
+                                return nextHelper();
+                            }
+                            return current;
+                    } else {
                         current = current.LetterArr[i];
+                        preWord += (char) (i + 'a');
+                        return current;
+                        }
                     }
                 }
             }
-            return map;
+            if(preWord != "") {
+                current = search(preWord.substring(0, preWord.length() - 1));
+                preWord = preWord.substring(0, preWord.length() - 1);
+            }
+            return nextHelper();
         }
 
         @Override
